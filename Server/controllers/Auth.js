@@ -10,7 +10,8 @@ async function handleLogin(req,res) {
         if(response.length==0){
             return res.status(200).json({error: "Invalid Username"});
         }
-        if(response[0].password != password){
+        const isMatch = bcrypt.compareSync(password,response[0].password); 
+        if(!isMatch){
             return res.status(200).json({error: "Invalid Password"});
         }
         token = jwt.sign(username,process.env.JWT_SECRET);
